@@ -11,9 +11,8 @@
 #include <string.h>
 #include <stdlib.h> /*EK*/
 
-#ifdef MSDOS
 #include <time.h>
-#else
+#ifndef MSDOS
 #include <sys/time.h>
 #endif
 

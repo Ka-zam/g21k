@@ -38,13 +38,17 @@ binutils/config.h
 binutils/config.status
 binutils/config.log
 binutils/config.cache
+binutils/stamp-*
 binutils/*/*.o
+binutils/*/depend
 binutils/app/asm21k
+binutils/app/cc21k
 binutils/app/mp
 binutils/asm/a21000
 binutils/ldr/mem21k
 binutils/link/ld21k
 binutils/cdump/cdump
+binutils/cdump/coffdump
 
 # Editor/IDE
 *~

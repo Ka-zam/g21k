@@ -9,18 +9,14 @@
 #if SIZEOF_SHORT != 2
 	#error sorry, this source code depends on sizeof(short)==2
 #endif
-#define SIZEOF_CHAR_P 4
-#if SIZEOF_LONG != 4
-	#error sorry, this source code depends on sizeof(long)==4
-#endif
-#if SIZEOF_CHAR_P != 4
-	#error sorry, this source code depends on sizeof(char *)==4
+#if SIZEOF_INT != 4
+	#error sorry, this source code depends on sizeof(int)==4
 #endif
 
 struct reloc
 {
-    long            r_vaddr; /* address of refrence */
-    long            r_symndx; /* index into symbol table */
+    int             r_vaddr; /* address of refrence */
+    int             r_symndx; /* index into symbol table */
     unsigned short  r_type;     /* relocation type */
 } PACKED;
 
