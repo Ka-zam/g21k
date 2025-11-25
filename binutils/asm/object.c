@@ -248,9 +248,9 @@ void write_all_relocation_info( long num_reloc )
   short             i;
       
       
-  union 
+  union
   {
-    long offsets[2];
+    int offsets[2];   /* COFF uses 32-bit offsets */
     char dummy[8];
   } kluge;
   char              symname[SYMNMLEN+1];

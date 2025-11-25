@@ -5,15 +5,15 @@
 
 typedef struct symbol SYMBOL;
 
-struct symbol 
+struct symbol
 {
     union
     {
         char name[MAX_SYMBOL_NAME_SIZE + 1]; /* Pointer to name in memory */
         struct
         {
-            long zeroes;
-            long offset;
+            int zeroes;   /* COFF uses 32-bit values */
+            int offset;
         } strtab_entry;
     } what;
 

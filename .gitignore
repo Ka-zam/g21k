@@ -2,6 +2,9 @@
 *.o
 *.obj
 
+# Preprocessor output
+*.cpp
+
 # Executables
 gcc/g21k/g21k
 gcc/g21k/g21k-lite

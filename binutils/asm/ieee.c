@@ -172,7 +172,10 @@ void format_ieee( unsigned long mant, int exp, unsigned char *number, char preci
 {
     if( !mant && !exp )
     {
-        *((unsigned long *) number) = 0;
+        number[0] = 0;
+        number[1] = 0;
+        number[2] = 0;
+        number[3] = 0;
         if( precision == EXTENDED_PRECISION)
 	    number[4] = 0;
         return;
