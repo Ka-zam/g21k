@@ -3,7 +3,7 @@ union auxent
 {
     struct
     {
-	long                    x_tagndx;
+	int                     x_tagndx;   /* COFF: 32-bit */
 	union
 	{
 	    struct
@@ -11,14 +11,14 @@ union auxent
 		unsigned short  x_lnno;
 		unsigned short  x_size;
 	    } PACKED x_lnsz;
-	    long                x_fsize;
+	    int                 x_fsize;    /* COFF: 32-bit */
 	} PACKED x_misc;
 	union
 	{
 	    struct
 	    {
-		long            x_lnnoptr;
-		long            x_endndx;
+		int             x_lnnoptr;  /* COFF: 32-bit */
+		int             x_endndx;   /* COFF: 32-bit */
 	    } PACKED x_fcn;
 	    struct
 	    {
@@ -33,7 +33,7 @@ union auxent
     } PACKED x_file;
     struct
     {
-	long                    x_scnlen;
+	int                     x_scnlen;   /* COFF: 32-bit */
 	unsigned short          x_nreloc;
 	unsigned short          x_nlinno;
     } PACKED x_scn;
@@ -41,6 +41,7 @@ union auxent
 
 typedef union auxent AUXENT;
 
+#define     AUXESZ_COFF 18  /* COFF file size (same as SYMESZ_COFF) */
 #define     AUXESZ  sizeof(union auxent)
 
 /******************************************************/

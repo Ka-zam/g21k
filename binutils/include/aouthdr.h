@@ -5,12 +5,12 @@ typedef struct aouthdr
 {
     short   magic;	    /* magic number */
     short   vstamp;	    /* version stamp */
-    long    tsize;	    /* text size in bytes */
-    long    dsize;	    /* initialized data size */
-    long    bsize;	    /* uninitialized data size */
-    long    entry;	    /* entry point */
-    long    text_start;	    /* base of text used for this file */
-    long    data_start;	    /* base of data used for this file */
+    int    tsize;	    /* text size in bytes (COFF: 32-bit) */
+    int    dsize;	    /* initialized data size (COFF: 32-bit) */
+    int    bsize;	    /* uninitialized data size (COFF: 32-bit) */
+    int    entry;	    /* entry point (COFF: 32-bit) */
+    int    text_start;	    /* base of text used for this file (COFF: 32-bit) */
+    int    data_start;	    /* base of data used for this file (COFF: 32-bit) */
 } AOUTHDR;
 
 

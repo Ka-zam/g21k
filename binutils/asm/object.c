@@ -112,7 +112,11 @@ void object_headers( void )
     header.f_nscns = (unsigned short)section_cnt;
     header.f_symptr = line_ptr + line * LINESZ;
     header.f_nsyms = num_syms;
-    time( &(header.f_timdat) );
+    {
+        time_t t;
+        time(&t);
+        header.f_timdat = (int)t;
+    }
     header.f_opthdr = AOUTSZ;
     header.f_flags = 0;
 

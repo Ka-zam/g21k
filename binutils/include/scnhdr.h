@@ -5,15 +5,15 @@
 struct scnhdr
 {
     char	    s_name[SYMNMLEN];	/* section name */
-    long	    s_paddr;		/* physical address */
-    long	    s_vaddr;		/* virtual address */
-    long	    s_size;		/* section size */
-    long	    s_scnptr;		/* file ptr to raw data for section */
-    long	    s_relptr;		/* file ptr to relocation */
-    long	    s_lnnoptr;		/* file ptr to line numbers */
+    int	    s_paddr;		/* physical address (COFF: 32-bit) */
+    int	    s_vaddr;		/* virtual address (COFF: 32-bit) */
+    int	    s_size;		/* section size (COFF: 32-bit) */
+    int	    s_scnptr;		/* file ptr to raw data for section (COFF: 32-bit) */
+    int	    s_relptr;		/* file ptr to relocation (COFF: 32-bit) */
+    int	    s_lnnoptr;		/* file ptr to line numbers (COFF: 32-bit) */
     unsigned short  s_nreloc;		/* number of relocation entries */
     unsigned short  s_nlnno;		/* number of line number entries */
-    long	    s_flags;		/* type and content flags */
+    int	    s_flags;		/* type and content flags (COFF: 32-bit) */
 };
 
 #define	    SCNHDR	struct scnhdr

@@ -73,7 +73,7 @@ int write_section_header( SCNHDR *section_header, FILE *fp )
   **********************************************************************/
 int write_symbol( SYMENT *symbol_ptr, FILE *fp )
 {
-  if( 1 == fwrite( (unsigned char *)symbol_ptr, SYMESZ, 1, fp))
+  if( 1 == fwrite( (unsigned char *)symbol_ptr, SYMESZ_COFF, 1, fp))
     return(1);
   else
     return( 0);
@@ -114,8 +114,8 @@ int write_relocation_info( RELOC *relocation_ptr, FILE *fp )
 int write_aux_info( AUXENT *auxiliary_ptr, FILE *fp, int aux_class )
 {
   aux_class = 0; /* to shut the compiler up */
-   
-  if( 1 == fwrite( (unsigned char *)auxiliary_ptr, AUXESZ, 1, fp) )
+
+  if( 1 == fwrite( (unsigned char *)auxiliary_ptr, AUXESZ_COFF, 1, fp) )
     return(1);
   else
     return( 0);
@@ -209,7 +209,8 @@ int read_section_header( SCNHDR *section_header, FILE *fp )
   **********************************************************************/
 int read_symbol( SYMENT *symbol_ptr, FILE *fp )
 {
-  if( 1 == fread( (unsigned char *)symbol_ptr, SYMESZ, 1, fp))
+  symbol_ptr->_n_nptr = NULL;  /* Initialize runtime pointer */
+  if( 1 == fread( (unsigned char *)symbol_ptr, SYMESZ_COFF, 1, fp))
     return(1);
   else
     return( 0);
@@ -250,7 +251,7 @@ int read_relocation_info( RELOC *relocation_ptr, FILE *fp )
 int read_aux_info( AUXENT *auxiliary_ptr, FILE *fp, int aux_class )
 {
   aux_class = 0; /* to shut the compiler up */
-  if( 1 == fread( (unsigned char *)auxiliary_ptr, AUXESZ, 1, fp) )
+  if( 1 == fread( (unsigned char *)auxiliary_ptr, AUXESZ_COFF, 1, fp) )
     return(1);
   else
     return( 0);

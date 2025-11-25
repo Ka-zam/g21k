@@ -83,7 +83,7 @@ void mem_map_add_symbol( register SYMENT *obj_sym_ptr, long address, INPUT_SECT 
 
 	
        if( 0L == OBJ_SYM_ZEROES(obj_sym_ptr) )
-	 name = obj_sym_ptr->_n._n_p._n_nptr;
+	 name = obj_sym_ptr->_n_nptr;
        else 
        {
 	 strncpy(local_symname, obj_sym_ptr->_n._n_name, SYMNMLEN);

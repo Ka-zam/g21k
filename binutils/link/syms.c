@@ -139,7 +139,7 @@ LINKER_SYM *findsym( char *name )
     {
 	p = getsym( acid );
 	if( 0L == p->obj_sym.n_zeroes )
-	  sym_name = p->obj_sym._n._n_p._n_nptr;
+	  sym_name = p->obj_sym._n_nptr;
 	else 
 	{
 	  strncpy( local_symname, p->obj_sym._n._n_name, SYMNMLEN);
@@ -226,7 +226,7 @@ LINKER_SYM  *makesym( register SYMENT *sym, INPUT_FILE *file_ptr )
     char                 local_symname[SYMNMLEN+1];
 
     if( 0L == OBJ_SYM_ZEROES(sym) )
-      name = sym->_n._n_p._n_nptr;
+      name = sym->_n_nptr;
     else 
     {
       strncpy( local_symname, sym->_n._n_name, SYMNMLEN);
@@ -259,7 +259,7 @@ LINKER_SYM  *makesym( register SYMENT *sym, INPUT_FILE *file_ptr )
 	if( (IN_OBJ_STRING_TABLE(sym)) && ((file_ptr == NULL) ||
 	    (file_ptr && (file_ptr->strings == NULL))) )
 	{
-	    p->obj_sym._n._n_p._n_nptr = strsave(sym->_n._n_p._n_nptr);
+	    p->obj_sym._n_nptr = strsave(sym->_n_nptr);
 	}
 
 	p->obj_sym.n_numaux = 0;
@@ -340,7 +340,7 @@ LINKER_AUX * makeaux( register LINKER_SYM *sym, register AUXENT *aux, int num_au
 	if( num_aux != 0 )
 	  {
 	    if( 0L == sym->obj_sym.n_zeroes )
-	      name = sym->obj_sym._n._n_p._n_nptr;
+	      name = sym->obj_sym._n_nptr;
 	    else 
 	    {
 	      strncpy( local_symname, sym->obj_sym._n._n_name, SYMNMLEN);
@@ -374,7 +374,7 @@ LINKER_AUX * makeaux( register LINKER_SYM *sym, register AUXENT *aux, int num_au
     if( num_aux == 0 )
     {
       if( 0L == sym->obj_sym.n_zeroes )
-	name = sym->obj_sym._n._n_p._n_nptr;
+	name = sym->obj_sym._n_nptr;
       else 
       {
 	strncpy( local_symname, sym->obj_sym._n._n_name, SYMNMLEN);
@@ -520,7 +520,7 @@ long process_symbol_table( FILE *fd, long numsyms, INPUT_FILE *file_ptr,
 	    if( string_table_ptr == NULL )
 		FATAL_ERROR1( "Name referenced when no string table exists in file %s", 
 			     file_ptr->file_name);
-	    sym->_n._n_p._n_nptr = string_table_ptr + OBJ_SYM_OFFSET(sym);
+	    sym->_n_nptr = string_table_ptr + OBJ_SYM_OFFSET(sym);
 	}
 
 	switch( sym->n_sclass )
@@ -595,7 +595,7 @@ long process_symbol_table( FILE *fd, long numsyms, INPUT_FILE *file_ptr,
 		   if( sym->n_numaux == 1 )
 		   {
 		       n++;
-		       if( fseek(fd, (long) AUXESZ, 1) != 0 )
+		       if( fseek(fd, (long) AUXESZ_COFF, 1) != 0 )
 			   FATAL_ERROR1( "Failed to skip the aux entry of %s", file_ptr->file_name );
 		   };
 		   continue;
@@ -623,8 +623,8 @@ long process_symbol_table( FILE *fd, long numsyms, INPUT_FILE *file_ptr,
 			*/
 
 		       if( tmp_numaux > 1 )
-			   if( fseek(fd, (long) (AUXESZ * (tmp_numaux - 1)), 1) != 0 )
-			       FATAL_ERROR1("Failed to skip the aux entry of file: %s", 
+			   if( fseek(fd, (long) (AUXESZ_COFF * (tmp_numaux - 1)), 1) != 0 )
+			       FATAL_ERROR1("Failed to skip the aux entry of file: %s",
 					   file_ptr->file_name);
 
 		       /*
@@ -637,7 +637,7 @@ long process_symbol_table( FILE *fd, long numsyms, INPUT_FILE *file_ptr,
 			  if( !xflag )
 			      local_symbols += l;
 			  n = aux->x_sym.x_fcnary.x_fcn.x_endndx - 1;
-			  if( fseek(fd, l * SYMESZ, 1) != 0 )
+			  if( fseek(fd, l * SYMESZ_COFF, 1) != 0 )
 			      FATAL_ERROR1( "Failed to skip a structure member in file: %s", 
 					    file_ptr->file_name);
 		      }
@@ -693,7 +693,7 @@ LINKER_AUX *find_aux_entry( LINKER_SYM *sym, LINKER_AUX *aux, int changed )
 
    /* 
     if( 0L == sym->obj_sym.n_zeroes )
-      name = sym->obj_sym._n._n_p._n_nptr;
+      name = sym->obj_sym._n_nptr;
     else 
     {
       strncpy( local_symname, sym->obj_sym._n._n_name, SYMNMLEN);

@@ -1,0 +1,41 @@
+!---------------------------------------------------------------------
+.SYSTEM         SHARC_EZKIT_Lite;
+!
+! This architecture file is required for used with the SHARC EZ-KIT
+! Lite development software. It is structured for use with the C
+! compiler but also can be used with assembly code.
+!
+! This architecture file allocates:
+!    Internal 133 words of 48-bit run-time header in memory block 0
+!              16 words of 48-bit initialization code in memory block 0
+!             619 words of 48-bit kernel code in memory block 0
+!            7424 words of 48-bit C code space in memory block 0
+!              4K words of 32-bit PM C data space in memory block 0
+!
+!              8K words of 32-bit C DM data space in memory block 1
+!              4K words of 32-bit C heap space in memory block 1
+!            3712 words of 32-bit C stack space in memory block 1
+!             384 words of 32-bit kernel data in memory block 1
+
+.PROCESSOR = ADSP21061;
+
+!   -------------------------------------------------------------
+!   Internal memory Block 0
+!   -------------------------------------------------------------
+.SEGMENT/RAM/BEGIN=0x00020000 /END=0x00020084 /PM/WIDTH=48        seg_rth;
+.SEGMENT/RAM/BEGIN=0x00020085 /END=0x00020094 /PM/WIDTH=48        seg_init;
+.SEGMENT/RAM/BEGIN=0x00020095 /END=0x00020fff /PM/WIDTH=48        seg_pmc0;
+.SEGMENT/RAM/BEGIN=0x00021000 /END=0x00021fff /PM/WIDTH=48        seg_pmco;
+.SEGMENT/RAM/BEGIN=0x00023000 /END=0x00023fff /PM/WIDTH=32        seg_pmda;
+
+!   -------------------------------------------------------------
+!   Internal memory Block 1
+!   -------------------------------------------------------------
+.SEGMENT/RAM/BEGIN=0x00024000 /END=0x00027ffd /DM/WIDTH=32        seg_dmda;
+.SEGMENT/RAM/BEGIN=0x00027ffe /END=0x00027fff /DM/WIDTH=32        seg_stak;
+
+!   -------------------------------------------------------------
+!   External Memory Select 1 is reserved for the UART.
+!   -------------------------------------------------------------
+
+.ENDSYS;

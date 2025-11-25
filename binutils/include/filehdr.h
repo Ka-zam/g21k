@@ -5,9 +5,9 @@ struct filehdr
 {
     unsigned short  f_magic;	/* magic number */
     unsigned short  f_nscns;	/* number of sections */
-    long	    f_timdat;	/* time & date stamp */
-    long	    f_symptr;	/* file pointer to symtab */
-    long	    f_nsyms;	/* number of symtab entries */
+    int	    f_timdat;	/* time & date stamp (COFF: 32-bit) */
+    int	    f_symptr;	/* file pointer to symtab (COFF: 32-bit) */
+    int	    f_nsyms;	/* number of symtab entries (COFF: 32-bit) */
     unsigned short  f_opthdr;	/* sizeof(optional hdr) */
     unsigned short  f_flags;	/* flags */
 };

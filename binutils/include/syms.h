@@ -1,31 +1,30 @@
 struct syment
 {
+    /* --- COFF file format fields (18 bytes) --- */
     union
     {
 	char    _n_name[SYMNMLEN];  /* Symbol name (if .LE. 8) */
 	struct                      /* if _n_name[0-3] == 0 */
 	{
-	    long    _n_zeroes;      /* then _n_name[4-7] is an */
-	    long    _n_offset;      /* offset into the string table */
+	    int    _n_zeroes;      /* then _n_name[4-7] is an (COFF: 32-bit) */
+	    int    _n_offset;      /* offset into the string table (COFF: 32-bit) */
 	} _n_n;
-	struct
-	{
-		long  _n_padding;
-		char *_n_nptr;      /* allows for overlaying */
-	} _n_p;
       } _n;
-    long            n_value;        /* value of symbol */
+    int            n_value;        /* value of symbol (COFF: 32-bit) */
     short           n_scnum;        /* section number */
     unsigned short  n_type;         /* type and derived type */
     char            n_sclass;       /* storage class */
     char            n_numaux;       /* number of aux. entries */
+    /* --- End of COFF fields --- */
+    char           *_n_nptr;        /* runtime pointer to name in string table (not in COFF file) */
 } PACKED ;
 
 #define     SYMENT      struct syment
+#define     SYMESZ_COFF 18          /* COFF file size: 8 + 4 + 2 + 2 + 1 + 1 */
 #define     SYMESZ      sizeof(SYMENT)
 
 #define     n_name      _n._n_name
-#define     n_nptr      _n._n_nptr
+#define     n_nptr      _n_nptr
 #define     n_zeroes    _n._n_n._n_zeroes
 #define     n_offset    _n._n_n._n_offset
 

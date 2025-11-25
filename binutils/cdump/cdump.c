@@ -568,7 +568,7 @@ int print_string_table(FILE *fp, FILHDR file_header)
   long          string_table_size, offset, begin_offset;
   char          string_name[BUFSIZ];
 
-  if( fseek( fp, file_header.f_symptr + file_header.f_nsyms * SYMESZ, SEEK_SET) )
+  if( fseek( fp, file_header.f_symptr + file_header.f_nsyms * SYMESZ_COFF, SEEK_SET) )
     return( ERR_FSEEK);
   if( 1 != fread( &string_table_size, sizeof(long), 1, fp) )
     return( ERR_FREAD);
@@ -615,7 +615,7 @@ void print_raw_aux ( char *ae)
 {
   int i;
   fprintf(outfp,"     aux = 0x");
-  for (i = 1; i <= AUXESZ; i++, *ae++)
+  for (i = 1; i <= AUXESZ_COFF; i++, *ae++)
     {
       fprintf(outfp,"%1x", (*ae >> 4) & 0xf);
       fprintf(outfp,"%1x", (*ae & 0xf));

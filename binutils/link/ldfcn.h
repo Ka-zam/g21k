@@ -70,4 +70,4 @@ typedef struct
 #define REWIND(ldptr)         rewind(IOPTR(ldptr))
 #define SETBUF(ldptr,b)       setbuf(IOPTR(ldptr),b)
 #define UNGETC(c,ldptr)       ungetc(c,IOPTR(ldptr))
-#define STROFFSET(ldptr)      (HEADER(ldptr).f_symptr + HEADER(ldptr).f_nsyms * SYMESZ) 
+#define STROFFSET(ldptr)      (HEADER(ldptr).f_symptr + HEADER(ldptr).f_nsyms * SYMESZ_COFF) 

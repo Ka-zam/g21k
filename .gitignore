@@ -2,6 +2,12 @@
 *.o
 *.obj
 
+# Linked executables
+*.21k
+
+# Linker map files
+*.map
+
 # Preprocessor output
 *.cpp
 

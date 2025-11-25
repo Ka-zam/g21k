@@ -402,15 +402,15 @@ long output_local_symbols( FILE *symbol_fd, FILE *string_fd, FILE *input_file_fd
 	{
 	    if( string_table_ptr == NULL )
 		LINKER_ERROR1( "String table does not exist in file %s", input_file_ptr->file_name );
-	    sym->_n._n_p._n_nptr = string_table_ptr + OBJ_SYM_OFFSET( sym );
+	    sym->_n_nptr = string_table_ptr + OBJ_SYM_OFFSET( sym );
 #ifdef DEBUG
-	    printf( "output_local_symbols: string in table = %s\n",  sym->_n._n_p._n_nptr);
+	    printf( "output_local_symbols: string in table = %s\n",  sym->_n_nptr);
 	    fflush( stdout );
 #endif        
 	}
 
 	if( 0L == OBJ_SYM_ZEROES(sym) )
-	  symname = sym->_n._n_p._n_nptr;
+	  symname = sym->_n_nptr;
 	else 
 	{
 	  strncpy( local_symname, sym->_n._n_name, SYMNMLEN);
@@ -441,14 +441,14 @@ long output_local_symbols( FILE *symbol_fd, FILE *string_fd, FILE *input_file_fd
 
 			   if( IN_OBJ_STRING_TABLE(&sym_ptr->obj_sym) )
 			   {
-			       save_ptr = sym_ptr->obj_sym._n._n_p._n_nptr;
+			       save_ptr = sym_ptr->obj_sym._n_nptr;
 			       output_write_string( string_fd, &sym_ptr->obj_sym, 
 						   sym_ptr->name_length );
 			   }
 
 			   write_symbol( &(sym_ptr->obj_sym), symbol_fd );
 			   if( IN_OBJ_STRING_TABLE(&sym_ptr->obj_sym) )
-			       sym_ptr->obj_sym._n._n_p._n_nptr = save_ptr;
+			       sym_ptr->obj_sym._n_nptr = save_ptr;
 
 			   sym_ptr->obj_sym.n_value = slot_value1;
 			   if( sym_ptr->obj_sym.n_numaux > 0 )
@@ -477,10 +477,10 @@ long output_local_symbols( FILE *symbol_fd, FILE *string_fd, FILE *input_file_fd
 		       }
 		       if( sym->n_numaux > 0 )
 		       {
-			   if( fseek(input_file_fd, (long) (sym->n_numaux * AUXESZ), 1) 
+			   if( fseek(input_file_fd, (long) (sym->n_numaux * AUXESZ_COFF), 1)
 			       != OKFSEEK)
 			   {
-			       LINKER_ERROR1( "Failed to skip a aux entry in file: %s", 
+			       LINKER_ERROR1( "Failed to skip a aux entry in file: %s",
 					      input_file_ptr->file_name);
 			   }
 		       }
@@ -629,7 +629,7 @@ wrtsym:
 		      }
 
 		      if( IN_OBJ_STRING_TABLE(sym) )
-			  output_write_string(string_fd, sym, strlen(sym->_n._n_p._n_nptr) + 1);
+			  output_write_string(string_fd, sym, strlen(sym->_n_nptr) + 1);
 
 		      if( 1 )
 			  write_symbol( sym, symbol_fd );
@@ -808,7 +808,7 @@ void output_global_symbols( FILE *symbol_fd, FILE *string_fd )
 		     }
 
 		     if( sym_ptr->obj_sym.n_zeroes == 0L )
-			 USER_ERROR1( "%s\n", sym_ptr->obj_sym._n._n_p._n_nptr);
+			 USER_ERROR1( "%s\n", sym_ptr->obj_sym._n_nptr);
 		     else
 			 fprintf(stderr, "%.8s\n", sym_ptr->obj_sym._n._n_name);
 		     sym_ptr->undefined_msg = 1;
@@ -818,14 +818,14 @@ void output_global_symbols( FILE *symbol_fd, FILE *string_fd )
 
 		if( sym_ptr->obj_sym.n_zeroes == 0L )
 		{
-		    save_ptr = sym_ptr->obj_sym._n._n_p._n_nptr;
+		    save_ptr = sym_ptr->obj_sym._n_nptr;
 		    output_write_string( string_fd, &sym_ptr->obj_sym, sym_ptr->name_length );
 		}
 
 		write_symbol( &(sym_ptr->obj_sym), symbol_fd);
 
 		if( sym_ptr->obj_sym.n_zeroes == 0L )
-		    sym_ptr->obj_sym._n._n_p._n_nptr= save_ptr;
+		    sym_ptr->obj_sym._n_nptr= save_ptr;
 
 		num_output_syms++;
 		aux_ptr = NULL;
@@ -924,7 +924,7 @@ void output_line_numbers( INPUT_SECT *input_sect_ptr, OUTPUT_SECT *output_sect_p
 /* had something to do with an int/long conversion, but everything was long!  Oh well*/
 /* after two full days I don't care why it works, just so long as it does.  GAS      */
 	     offset = 1 + line->l_addr.l_symndx;
-	     offset *= SYMESZ;
+	     offset *= SYMESZ_COFF;
 	     offset += ((char *) &aux.x_sym.x_fcnary.x_fcn.x_lnnoptr - (char *) &aux);
 	     fseek(symbol_fd, offset, 0);
 	     fwrite( &line_ptr, sizeof(long), 1, symbol_fd);
@@ -964,8 +964,8 @@ void output_update_file_entry( FILE *symbol_fd, long sym_index )
     register long  here;   /* where we are now */
     register long  there;  /* where to write update value */
 
-    here = symbol_table_origin + sym_index * (long) SYMESZ;
-    there = symbol_table_origin + (lastfile * (long) SYMESZ) + (long) SYMNMLEN;
+    here = symbol_table_origin + sym_index * (long) SYMESZ_COFF;
+    there = symbol_table_origin + (lastfile * (long) SYMESZ_COFF) + (long) SYMNMLEN;
     fseek( symbol_fd, there - here, 1 );
     fwrite( &sym_index, sizeof(long), 1, symbol_fd );
     fseek( symbol_fd, here - there - sizeof(long), 1 );
@@ -993,7 +993,7 @@ void output_update_file_entry( FILE *symbol_fd, long sym_index )
 
 void output_write_string( FILE *string_fd, register SYMENT *sym, register int string_length )
 {
-    if( (last_string_ptr + string_buf_length) == sym->_n._n_p._n_nptr)
+    if( (last_string_ptr + string_buf_length) == sym->_n_nptr)
 	 string_buf_length += string_length;
     else
     {
@@ -1006,7 +1006,7 @@ void output_write_string( FILE *string_fd, register SYMENT *sym, register int st
 	     LINKER_ERROR2( "Error writing symbol name %s in string table for file %s",
 			    last_string_ptr, output_file_name);
 	 }
-	 last_string_ptr = sym->_n._n_p._n_nptr;
+	 last_string_ptr = sym->_n_nptr;
 	 string_buf_length = string_length;
     }
 
@@ -1214,7 +1214,7 @@ void output_finish_up( FILE *symbol_fd, FILE *output_fd, FILE *string_fd )
 	fclose( symbol_fd );
 	copy_section( temp_file[sym_temp_index], output_fd );
 	
-	string_table_origin = symbol_table_origin + SYMESZ * total_output_symbols + 4;
+	string_table_origin = symbol_table_origin + SYMESZ_COFF * total_output_symbols + 4;
 	fseek( output_fd, string_table_origin, 0);
 	fflush( string_fd );
 

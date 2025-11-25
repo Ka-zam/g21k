@@ -180,7 +180,7 @@ void fixup_symbol_table( register FILE *fd )
 	{
 	       if( sym_ptr->function_length >= 0 )
 	       {
-		   fseek( fd, (sym_ptr->symbol_index * SYMESZ) +
+		   fseek( fd, (sym_ptr->symbol_index * SYMESZ_COFF) +
 			 (long)(((char *) &auxent.x_sym.x_fcnary.x_fcn.x_lnnoptr) - ((char *) &auxent)), 0 );
 		     
 		   fixup_value = sect_lp[sym_ptr->section]+sym_ptr->linnumber;
@@ -188,17 +188,17 @@ void fixup_symbol_table( register FILE *fd )
 
 
 /*      It is uncertain if this will be necessary!
-		   fseek( fd, (sym_ptr->symbol_index * SYMESZ) +
+		   fseek( fd, (sym_ptr->symbol_index * SYMESZ_COFF) +
 			 (long)(((char *) &auxent.x_sym.x_tagndx) - ((char *) &auxent)), 0 );
 		   port_put_long( sym_ptr->function_beginning, long_buff );
 		   FWRITE( long_buff, sizeof(sym_ptr->function_beginning), 1, fd );
 */
 
-		   fseek( fd, (sym_ptr->symbol_index * SYMESZ) +
+		   fseek( fd, (sym_ptr->symbol_index * SYMESZ_COFF) +
 			 (long)(((char *) &auxent.x_sym.x_misc.x_fsize) - ((char *) &auxent)), 0 );
 		   FWRITE( &sym_ptr->function_length, sizeof(sym_ptr->function_length), 1, fd );
 	       }
-	       fseek( fd, (sym_ptr->symbol_index * SYMESZ) +
+	       fseek( fd, (sym_ptr->symbol_index * SYMESZ_COFF) +
 		     (long)(((char *) &auxent.x_sym.x_fcnary.x_fcn.x_endndx) - ((char *) &auxent)), 0 );
 	       FWRITE( &sym_ptr->forward_index, sizeof(sym_ptr->forward_index), 1, fd );
 	       sym_ptr = sym_ptr->next;

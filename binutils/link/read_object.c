@@ -392,12 +392,12 @@ char *read_string_table( FILE *fd, register INPUT_FILE *file_ptr, register long 
 {
     long symbol_table_end;
     char *string_table_ptr;
-    long string_table_size;
+    int string_table_size;  /* COFF uses 32-bit size */
 
     if( file_ptr->sym_table_ptr == 0 )
 	return( NULL );
 
-    symbol_table_end = file_ptr->sym_table_ptr + SYMESZ * file_ptr->num_symbols;
+    symbol_table_end = file_ptr->sym_table_ptr + SYMESZ_COFF * file_ptr->num_symbols;
 
     if( file_ptr->arch_offset )
     {

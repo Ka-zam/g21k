@@ -3,8 +3,8 @@ struct lineno
 {
     union                       /* if l_lnno == 0... */
     {
-	long    l_symndx;       /* then use l_symndx, */
-	long    l_paddr;        /* else use l_paddr. */
+	int    l_symndx;       /* then use l_symndx (COFF: 32-bit) */
+	int    l_paddr;        /* else use l_paddr (COFF: 32-bit) */
     } l_addr;
     unsigned short  l_lnno;     /* line number */
 } PACKED;
