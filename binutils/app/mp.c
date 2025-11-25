@@ -338,7 +338,7 @@ int main(argc, argv, envp)
 	    printerr( "Unterminated #if", "" );
 
 	fclose( outfil );
-	fclose( curinfil );
+	/* curinfil is already closed by readline() when EOF is reached */
 
 	if( err_cnt ) 
 	{
