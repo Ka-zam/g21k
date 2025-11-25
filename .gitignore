@@ -1,5 +1,6 @@
 # Object files
 *.o
+*.obj
 
 # Executables
 gcc/g21k/g21k
