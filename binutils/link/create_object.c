@@ -72,11 +72,11 @@ unsigned long C_init_list[] =
 	0x00000000L             /* ___lib_heap_space    */
 };
 
-struct 
+struct
 	{
-		long x;
-		long y;
-		long n_value;
+		int x;          /* COFF: 32-bit (part of symbol name) */
+		int y;          /* COFF: 32-bit (part of symbol name) */
+		int n_value;    /* COFF: 32-bit */
 		short w;
 		unsigned short b;
 		char a;
@@ -272,12 +272,14 @@ void create_c_object( void )
 /* Generate the rest of the symbol table */
     for( i=0; i<C_SYMBOL_COUNT; i++)
     {
-	memcpy(c_obj_sym_ptr, &c_symbol_list[i], SYMESZ);       /* Take symbol from list */
+	memcpy(c_obj_sym_ptr, &c_symbol_list[i], SYMESZ_COFF);  /* Take symbol from list */
 	if( write_symbol(c_obj_sym_ptr, c_object_fd) == 0 )
 		FATAL_ERROR( "Error writing to temporary file." );
     }
-    tmp_long = (long)C_STRING_TABLE_LENGTH;
-    fwrite( &tmp_long, sizeof(long), 1, c_object_fd );
+    {
+	int string_table_len = (int)C_STRING_TABLE_LENGTH;
+	fwrite( &string_table_len, sizeof(int), 1, c_object_fd );  /* COFF: 32-bit */
+    }
 
 /* Write out the string table */
 #ifdef MSDOS

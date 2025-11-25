@@ -433,11 +433,12 @@ strtoupper (register char *str)
  *     mkc     6/23/89       created                  -----             *
  ***********************************************************************/
 
-long 
+long
 port_get_long (register unsigned char  * buffer)
 {
   register long           w = 0;
-  register int            i = BITSPERBYTE * sizeof (long);
+  /* Always read exactly 4 bytes (32-bit), regardless of sizeof(long) */
+  register int            i = BITSPERBYTE * 4;
 
   while ((i -= BITSPERBYTE) >= 0)
     w |= (long) ((unsigned char) *buffer++) << i;
@@ -464,10 +465,11 @@ port_get_long (register unsigned char  * buffer)
  *     mkc     7/17/89       created                  -----             *
  ***********************************************************************/
 
-void 
+void
 port_put_long (register long w, register unsigned char * buffer)
 {
-  register int            i = BITSPERBYTE * sizeof (long);
+  /* Always write exactly 4 bytes (32-bit), regardless of sizeof(long) */
+  register int            i = BITSPERBYTE * 4;
 
   while ((i -= BITSPERBYTE) >= 0)
     *buffer++ = (char) (w >> i);
