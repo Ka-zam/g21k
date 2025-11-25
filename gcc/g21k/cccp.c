@@ -193,10 +193,9 @@ extern char *getenv ();
 extern FILE *fdopen ();
 extern char *version_string;
 extern struct tm *localtime ();
-extern int sys_nerr;
 
-/*EK* clashes with glibc: */
-/* extern char *sys_errlist[]; */
+/* Use strerror() instead of deprecated sys_errlist/sys_nerr */
+#include <string.h>
 
 #ifndef errno
 extern int errno;
@@ -7823,10 +7822,7 @@ error_from_errno (name)
   if (ip != NULL)
     fprintf (stderr, "%s:%d: ", ip->nominal_fname, ip->lineno);
 
-  if (errno < sys_nerr)
-    fprintf (stderr, "%s: %s\n", name, sys_errlist[errno]);
-  else
-    fprintf (stderr, "%s: undocumented I/O error\n", name);
+  fprintf (stderr, "%s: %s\n", name, strerror(errno));
 
   errors++;
 }
@@ -8728,10 +8724,7 @@ perror_with_name (name)
      char *name;
 {
   fprintf (stderr, "%s: ", progname);
-  if (errno < sys_nerr)
-    fprintf (stderr, "%s: %s\n", name, sys_errlist[errno]);
-  else
-    fprintf (stderr, "%s: undocumented I/O error\n", name);
+  fprintf (stderr, "%s: %s\n", name, strerror(errno));
   errors++;
 }
 

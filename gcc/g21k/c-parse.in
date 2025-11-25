@@ -58,6 +58,11 @@ end ifc
 #include "c-tree.h"
 #include "flags.h"
 
+/* Define YYLEX for modern bison compatibility */
+#ifndef YYLEX
+#define YYLEX yylex()
+#endif
+
 #ifdef MULTIBYTE_CHARS
 #include <stdlib.h>
 #include <locale.h>
@@ -1242,7 +1247,7 @@ notype_declarator:
 
 structsp:
 	  STRUCT identifier '{'
-		{ $$ = start_struct (RECORD_TYPE, $2);
+		{ $<ttype>$ = start_struct (RECORD_TYPE, $2);
 		  /* Start scope of tag before parsing components.  */
 		}
 	  component_decl_list '}'
@@ -1255,7 +1260,7 @@ structsp:
 	| STRUCT identifier
 		{ $$ = xref_tag (RECORD_TYPE, $2); }
 	| UNION identifier '{'
-		{ $$ = start_struct (UNION_TYPE, $2); }
+		{ $<ttype>$ = start_struct (UNION_TYPE, $2); }
 	  component_decl_list '}'
 		{ $$ = finish_struct ($<ttype>4, $5); }
 	| UNION '{' component_decl_list '}'
@@ -1265,13 +1270,13 @@ structsp:
 		{ $$ = xref_tag (UNION_TYPE, $2); }
 	| ENUM identifier '{'
 		{ $<itype>3 = suspend_momentary ();
-		  $$ = start_enum ($2); }
+		  $<ttype>$ = start_enum ($2); }
 	  enumlist maybecomma_warn '}'
 		{ $$ = finish_enum ($<ttype>4, nreverse ($5));
 		  resume_momentary ($<itype>3); }
 	| ENUM '{'
 		{ $<itype>2 = suspend_momentary ();
-		  $$ = start_enum (NULL_TREE); }
+		  $<ttype>$ = start_enum (NULL_TREE); }
 	  enumlist maybecomma_warn '}'
 		{ $$ = finish_enum ($<ttype>3, nreverse ($4));
 		  resume_momentary ($<itype>2); }

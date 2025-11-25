@@ -1,0 +1,57 @@
+# Object files
+*.o
+
+# Executables
+gcc/g21k/g21k
+gcc/g21k/g21k-lite
+gcc/g21k/cc1
+gcc/g21k/cccp
+gcc/g21k/cpp
+gcc/g21k/gen*
+!gcc/g21k/gen*.c
+
+# Generated source files
+gcc/g21k/c-parse.c
+gcc/g21k/c-parse.h
+gcc/g21k/c-parse.y
+gcc/g21k/c-parse.output
+gcc/g21k/cexp.c
+gcc/g21k/insn-*.c
+gcc/g21k/insn-*.h
+gcc/g21k/21klibs.h
+
+# Config/build artifacts
+gcc/g21k/Makefile
+gcc/g21k/config.h
+gcc/g21k/config.status
+gcc/g21k/hconfig.h
+gcc/g21k/tconfig.h
+gcc/g21k/tm.h
+gcc/g21k/md
+gcc/g21k/aux-output.c
+gcc/g21k/stamp-*
+gcc/which.host
+
+# Binutils build artifacts
+binutils/config.def
+binutils/config.h
+binutils/config.status
+binutils/config.log
+binutils/config.cache
+binutils/*/*.o
+binutils/app/asm21k
+binutils/app/mp
+binutils/asm/a21000
+binutils/ldr/mem21k
+binutils/link/ld21k
+binutils/cdump/cdump
+
+# Editor/IDE
+*~
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Install artifacts
+gcc/g21xx/install

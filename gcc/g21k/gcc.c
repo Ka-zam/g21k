@@ -164,18 +164,9 @@ extern char *getenv (const char *);
 extern int errno;
 #endif
 
-#ifndef sys_nerr
-extern int sys_nerr;
-#endif
-#ifndef HAVE_STRERROR
-#if defined(bsd4_4)
-extern const char *const sys_errlist[];
-#else
-extern char *sys_errlist[]; /*EK* sys_errlist clashes with glibc */
-#endif
-#else
-extern char *strerror();
-#endif
+/* Modern systems have strerror() - use it instead of deprecated sys_errlist */
+#define HAVE_STRERROR 1
+#include <string.h>
 
 #if !defined(sun) && !defined (SVR4) && !defined (__MSDOS__)
 extern int execv (const char *a, const char **b), execvp (const char *a, const char **b);
@@ -4697,10 +4688,7 @@ pfatal_with_name (char *name)
 {
   char *s;
 
-  if (errno < sys_nerr)
-    s = concat ("%s: ", my_strerror( errno ), "");
-  else
-    s = "cannot open `%s'";
+  s = concat ("%s: ", my_strerror( errno ), "");
   fatal (s, name);
 }
 
@@ -4709,10 +4697,7 @@ perror_with_name (char *name)
 {
   char *s;
 
-  if (errno < sys_nerr)
-    s = concat ("%s: ", my_strerror( errno ), "");
-  else
-    s = "cannot open `%s'";
+  s = concat ("%s: ", my_strerror( errno ), "");
   error (s, name);
 }
 
@@ -4721,11 +4706,8 @@ perror_exec (char *name)
 {
   char *s;
 
-  if (errno < sys_nerr)
-    s = concat ("installation problem, cannot exec `%s': ",
-		my_strerror (errno), "");
-  else
-    s = "installation problem, cannot exec `%s'";
+  s = concat ("installation problem, cannot exec `%s': ",
+	      my_strerror (errno), "");
   error (s, name);
 }
 

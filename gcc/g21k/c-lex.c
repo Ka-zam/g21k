@@ -144,7 +144,9 @@ hash (str, len)
 }
 
 #ifdef __GNUC__
-inline
+static inline
+#else
+static
 #endif
 struct resword *
 is_reserved_word (str, len)
