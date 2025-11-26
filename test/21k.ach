@@ -7,9 +7,9 @@
 !
 ! This architecture file allocates:
 !    Internal 133 words of 48-bit run-time header in memory block 0
-!              16 words of 48-bit initialization code in memory block 0
-!             619 words of 48-bit kernel code in memory block 0
-!            7424 words of 48-bit C code space in memory block 0
+!            2528 words of 48-bit initialization code in memory block 0
+!            2000 words of 48-bit kernel code (seg_pmc0) in memory block 0
+!            3531 words of 48-bit C code space (seg_pmco) in memory block 0
 !              4K words of 32-bit PM C data space in memory block 0
 !
 !              8K words of 32-bit C DM data space in memory block 1
@@ -23,9 +23,9 @@
 !   Internal memory Block 0
 !   -------------------------------------------------------------
 .SEGMENT/RAM/BEGIN=0x00020000 /END=0x00020084 /PM/WIDTH=48        seg_rth;
-.SEGMENT/RAM/BEGIN=0x00020085 /END=0x00020094 /PM/WIDTH=48        seg_init;
-.SEGMENT/RAM/BEGIN=0x00020095 /END=0x00020fff /PM/WIDTH=48        seg_pmc0;
-.SEGMENT/RAM/BEGIN=0x00021000 /END=0x00021fff /PM/WIDTH=48        seg_pmco;
+.SEGMENT/RAM/BEGIN=0x00020085 /END=0x00020A64 /PM/WIDTH=48        seg_init;
+.SEGMENT/RAM/BEGIN=0x00020A65 /END=0x00021234 /PM/WIDTH=48        seg_pmc0;
+.SEGMENT/RAM/BEGIN=0x00021235 /END=0x00021fff /PM/WIDTH=48        seg_pmco;
 .SEGMENT/RAM/BEGIN=0x00023000 /END=0x00023fff /PM/WIDTH=32        seg_pmda;
 
 !   -------------------------------------------------------------

@@ -99,7 +99,7 @@ void make_standalone(void)
 	long int inits_ptr;
 	long int init_section_address;
 	long int init_section_size;
-	long int string_table_length;
+	int string_table_length;  /* COFF uses 32-bit */
 	long int next_section_ptr;
 
 	my_section = &my_section_base;
@@ -278,8 +278,8 @@ void make_standalone(void)
 	  }
 	
 /*      Write out length of string table */
-	fread(&string_table_length, sizeof(long), 1, input_fd);
-	fwrite(&string_table_length, sizeof(long), 1, output_fd);
+	fread(&string_table_length, sizeof(int), 1, input_fd);   /* COFF: 32-bit */
+	fwrite(&string_table_length, sizeof(int), 1, output_fd); /* COFF: 32-bit */
 
 	if( string_table_length > 4 )
 		copy_block( string_table_length - 4);
